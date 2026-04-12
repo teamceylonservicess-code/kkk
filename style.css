@@ -216,25 +216,116 @@ body.light .greeting-banner { background: #ffffff; border-color: rgba(0, 0, 0, 0
 /* ========================================
    PROFILE & AVATAR STYLES
    ======================================== */
-.profile-container { max-width: 900px; margin: 0 auto; }
-.avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 10px 0; }
-.avatar-option { position: relative; cursor: pointer; border-radius: 14px; overflow: hidden; border: 2px solid transparent; transition: all var(--transition); background: var(--bg-dark); aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
-.avatar-option:hover { border-color: var(--primary-light); transform: translateY(-3px); }
-.avatar-option.selected { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(108, 43, 217, 0.15); }
-.avatar-option img { width: 85%; height: 85%; object-fit: cover; border-radius: 10px; transition: transform var(--transition); }
-.avatar-option:hover img { transform: scale(1.05); }
-.avatar-check { position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; opacity: 0; transform: scale(0.5); transition: all var(--transition); }
-.avatar-option.selected .avatar-check { opacity: 1; transform: scale(1); }
-.profile-form { display: flex; flex-direction: column; gap: 18px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.form-actions { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
-.form-actions .btn { flex: 1; min-width: 140px; justify-content: center; }
-.char-counter { font-size: 11px; color: var(--text-muted); text-align: right; margin-top: 4px; }
-.greeting-preview { display: flex; align-items: center; gap: 14px; padding: 14px; background: var(--bg-dark); border-radius: var(--radius-sm); }
-.preview-avatar { width: 52px; height: 52px; border-radius: 14px; object-fit: cover; }
-.preview-text { display: flex; flex-direction: column; gap: 3px; }
-.preview-text .greeting-text { font-size: 15px; font-weight: 600; color: var(--text-main); }
-.preview-text .subtext { font-size: 12px; color: var(--text-muted); }
+/* ========================================
+   PROFILE PAGE STYLES
+   ======================================== */
+.profile-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Avatar Grid - Desktop: 2 rows layout */
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 14px;
+    padding: 10px 0;
+}
+
+.avatar-option {
+    position: relative;
+    cursor: pointer;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: all var(--transition);
+    background: var(--bg-dark);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-option:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-3px);
+}
+
+.avatar-option.selected {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(108, 43, 217, 0.15);
+}
+
+.avatar-option img {
+    width: 85%;
+    height: 85%;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform var(--transition);
+}
+
+.avatar-option:hover img {
+    transform: scale(1.05);
+}
+
+.avatar-check {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 11px;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all var(--transition);
+}
+
+.avatar-option.selected .avatar-check {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ========================================
+   MOBILE RESPONSIVE - AVATAR GRID
+   ======================================== */
+@media (max-width: 768px) {
+    /* Mobile: First 9 avatars in 3x3 grid */
+    .avatar-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    
+    .avatar-option:nth-child(n+10) {
+        /* Avatars 10-14: Second "page" layout */
+        /* First row: 3 avatars (10, 11, 12) */
+        /* Second row: 2 avatars (13, 14) */
+    }
+}
+
+@media (max-width: 480px) {
+    .avatar-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    
+    .avatar-option {
+        border-radius: 10px;
+    }
+    
+    .avatar-check {
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        top: 4px;
+        right: 4px;
+    }
+}
 
 /* ========================================
    COUNTDOWN & UTILITIES
