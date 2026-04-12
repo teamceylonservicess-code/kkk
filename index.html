@@ -10,7 +10,6 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-logo">L</div>
@@ -40,7 +39,6 @@
             </div>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
             <header class="page-header">
                 <button class="hamburger"><i class="fa fa-bars"></i></button>
@@ -50,149 +48,86 @@
                 </div>
             </header>
 
-            <!-- ✅ CLEAN WHITE GREETING BANNER -->
             <div class="greeting-banner card mb-3">
                 <div class="greeting-content">
                     <img id="dashboard-avatar" src="https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png" alt="Avatar" class="greeting-avatar">
                     <div class="greeting-text-container">
                         <span id="greeting-full" class="greeting-full">Good morning, User</span>
-                        <span id="greeting-sub" class="greeting-sub">Ready to achieve your goals today? 🎯</span>
+                        <span id="greeting-sub" class="greeting-sub">Let's start learning 🎯</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Stats Grid -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon purple"><i class="fa fa-tasks"></i></div>
-                    <div class="stat-info">
-                        <h3 id="today-tasks-count">0</h3>
-                        <p>Today Tasks</p>
-                    </div>
+                    <div class="stat-info"><h3 id="today-tasks-count">0</h3><p>Today Tasks</p></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon green"><i class="fa fa-fire"></i></div>
-                    <div class="stat-info">
-                        <h3 id="day-streak">0</h3>
-                        <p>Day Streak</p>
-                    </div>
+                    <div class="stat-info"><h3 id="day-streak">0</h3><p>Day Streak</p></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon orange"><i class="fa fa-clock"></i></div>
-                    <div class="stat-info">
-                        <h3 id="today-study-time">0h</h3>
-                        <p>Today Study Time</p>
-                    </div>
+                    <div class="stat-info"><h3 id="today-study-time">0h</h3><p>Today Study Time</p></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon blue"><i class="fa fa-chart-bar"></i></div>
-                    <div class="stat-info">
-                        <h3 id="total-study-hours">0h</h3>
-                        <p>Total Hours</p>
-                    </div>
+                    <div class="stat-info"><h3 id="total-study-hours">0h</h3><p>Total Hours</p></div>
                 </div>
             </div>
 
-            <!-- Main Grid -->
             <div class="grid-2">
-                <!-- Study Chart -->
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title"><i class="fa fa-chart-area"></i> Study Hours (10 Days)</h3>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="studyChart" class="chart-canvas"></canvas>
-                    </div>
+                    <div class="card-header"><h3 class="card-title"><i class="fa fa-chart-area"></i> Study Hours (10 Days)</h3></div>
+                    <div class="chart-container"><canvas id="studyChart" class="chart-canvas"></canvas></div>
                 </div>
-
-                <!-- Today Tasks -->
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title"><i class="fa fa-list-check"></i> Today Tasks</h3>
                         <a href="tasks.html" class="btn btn-sm btn-secondary">Manage</a>
                     </div>
-                    <div id="today-tasks-list" class="task-list">
-                        <p style="color:var(--text-muted); text-align:center;">Loading...</p>
-                    </div>
+                    <div id="today-tasks-list" class="task-list"><p style="color:var(--text-muted);text-align:center;">Loading...</p></div>
                 </div>
             </div>
 
-            <!-- Secondary Grid -->
             <div class="grid-equal">
-                <!-- Exam Countdowns -->
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title"><i class="fa fa-calendar-countdown"></i> Exam Countdowns</h3>
                         <a href="countdown.html" class="btn btn-sm btn-secondary">Manage</a>
                     </div>
                     <div id="dashboard-countdowns-list" class="dash-cd-list">
-                        <p style="color:var(--text-muted); font-size:13px;">No countdowns set. <a href="countdown.html" style="color:var(--primary);">Add one</a></p>
+                        <p style="color:var(--text-muted);font-size:13px;">No countdowns set. <a href="countdown.html" style="color:var(--primary);">Add one</a></p>
                     </div>
                 </div>
 
-               <!-- Quick Stats -->
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title"><i class="fa fa-lightbulb"></i> Quick Stats</h3>
-    </div>
-    <div class="quick-stats-list">
-        <div class="stat-row">
-            <span>Total Days</span>
-            <strong id="total-days">0</strong>
-        </div>
-        <div class="stat-row">
-            <span>Avg Hours/Day</span>
-            <strong id="avg-hours">0</strong>
-        </div>
-        <div class="stat-row">
-            <span>Tasks Done</span>
-            <strong id="total-done">0</strong>
-        </div>
-        <div class="stat-row">
-            <span>Achievements</span>
-            <strong id="achievement-count">0</strong>
-        </div>
-    </div>
-</div>
-            <!-- Quick Tips -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title"><i class="fa fa-rocket"></i> Quick Tips</h3>
+                <div class="card">
+                    <div class="card-header"><h3 class="card-title"><i class="fa fa-lightbulb"></i> Quick Stats</h3></div>
+                    <div class="quick-stats-list">
+                        <div class="stat-row"><span>Total Days</span><strong id="total-days">0</strong></div>
+                        <div class="stat-row"><span>Avg Hours/Day</span><strong id="avg-hours">0</strong></div>
+                        <div class="stat-row"><span>Tasks Done</span><strong id="total-done">0</strong></div>
+                        <div class="stat-row"><span>Achievements</span><strong id="achievement-count">0</strong></div>
+                    </div>
                 </div>
-                <ul style="list-style:none; padding:0; margin:0; display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
-                    <li style="padding:12px; background:var(--bg-dark); border-radius:8px; font-size:13px;">
-                        <i class="fa fa-clock" style="color:var(--primary); margin-right:6px;"></i>
-                        Log daily study hours in Time Tracker
-                    </li>
-                    <li style="padding:12px; background:var(--bg-dark); border-radius:8px; font-size:13px;">
-                        <i class="fa fa-stopwatch" style="color:var(--success); margin-right:6px;"></i>
-                        Set Pomodoro sessions for focused work
-                    </li>
-                    <li style="padding:12px; background:var(--bg-dark); border-radius:8px; font-size:13px;">
-                        <i class="fa fa-calendar" style="color:var(--warning); margin-right:6px;"></i>
-                        Track exams with Countdown feature
-                    </li>
-                    <li style="padding:12px; background:var(--bg-dark); border-radius:8px; font-size:13px;">
-                        <i class="fa fa-robot" style="color:var(--info); margin-right:6px;"></i>
-                        Use Assistant for study schedules & tips
-                    </li>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><h3 class="card-title"><i class="fa fa-rocket"></i> Quick Tips</h3></div>
+                <ul style="list-style:none;padding:0;margin:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
+                    <li style="padding:12px;background:var(--bg-dark);border-radius:8px;font-size:13px;"><i class="fa fa-clock" style="color:var(--primary);margin-right:6px;"></i>Log daily study hours in Time Tracker</li>
+                    <li style="padding:12px;background:var(--bg-dark);border-radius:8px;font-size:13px;"><i class="fa fa-stopwatch" style="color:var(--success);margin-right:6px;"></i>Set Pomodoro sessions for focused work</li>
+                    <li style="padding:12px;background:var(--bg-dark);border-radius:8px;font-size:13px;"><i class="fa fa-calendar" style="color:var(--warning);margin-right:6px;"></i>Track exams with Countdown feature</li>
+                    <li style="padding:12px;background:var(--bg-dark);border-radius:8px;font-size:13px;"><i class="fa fa-robot" style="color:var(--info);margin-right:6px;"></i>Use Assistant for study schedules & tips</li>
                 </ul>
             </div>
 
-            <!-- Footer -->
-            <footer class="site-footer">
-                Powered by <a href="contact.html">DC</a> | Made in Sri Lanka 🇱🇰
-            </footer>
+            <footer class="site-footer">Powered by <a href="contact.html">DC</a> | Made in Sri Lanka 🇱🇰</footer>
         </main>
-
         <div class="overlay"></div>
     </div>
-
-    <div id="notification-toast" class="notification">
-        <i class="fa fa-check-circle"></i>
-        <span>Notification</span>
-    </div>
-
+    <div id="notification-toast" class="notification"><i class="fa fa-check-circle"></i><span>Notification</span></div>
     <script src="script.js"></script>
 </body>
 </html>
