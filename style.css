@@ -214,9 +214,6 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
 body.light .greeting-banner { background: #ffffff; border-color: rgba(0, 0, 0, 0.08); }
 
 /* ========================================
-   PROFILE & AVATAR STYLES
-   ======================================== */
-/* ========================================
    PROFILE PAGE STYLES
    ======================================== */
 .profile-container {
@@ -224,7 +221,7 @@ body.light .greeting-banner { background: #ffffff; border-color: rgba(0, 0, 0, 0
     margin: 0 auto;
 }
 
-/* Avatar Grid - Desktop: 2 rows layout */
+/* ✅ DESKTOP: 7 columns = 2 rows for 14 avatars */
 .avatar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -291,20 +288,149 @@ body.light .greeting-banner { background: #ffffff; border-color: rgba(0, 0, 0, 0
     transform: scale(1);
 }
 
+/* Profile Form */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+/* ✅ Cancel/Save Buttons - Previous Style */
+.form-actions .btn {
+    flex: 1;
+    min-width: 140px;
+    justify-content: center;
+    padding: 12px 20px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.form-actions .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #fff;
+}
+
+.form-actions .btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(108, 43, 217, 0.4);
+}
+
+.form-actions .btn-secondary {
+    background: var(--bg-card-hover);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+}
+
+.form-actions .btn-secondary:hover {
+    background: var(--bg-dark);
+    border-color: var(--primary);
+    color: var(--primary-light);
+}
+
+/* Preview Section */
+.greeting-preview {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    background: var(--bg-dark);
+    border-radius: var(--radius-sm);
+}
+
+.preview-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    object-fit: cover;
+}
+
+.preview-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.preview-text .greeting-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.preview-text .subtext {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.char-counter {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: right;
+    margin-top: 4px;
+}
+
 /* ========================================
-   MOBILE RESPONSIVE - AVATAR GRID
+   MOBILE RESPONSIVE
    ======================================== */
 @media (max-width: 768px) {
-    /* Mobile: First 9 avatars in 3x3 grid */
+    /* ✅ MOBILE: 3 columns grid - flows naturally */
     .avatar-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 10px;
     }
     
-    .avatar-option:nth-child(n+10) {
-        /* Avatars 10-14: Second "page" layout */
-        /* First row: 3 avatars (10, 11, 12) */
-        /* Second row: 2 avatars (13, 14) */
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+    }
+    
+    .greeting-preview {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .greeting-content {
+        padding: 14px 16px;
+        gap: 12px;
+    }
+    
+    .greeting-avatar {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .greeting-full {
+        font-size: 18px;
+    }
+    
+    .greeting-sub {
+        font-size: 12px;
     }
 }
 
@@ -325,59 +451,17 @@ body.light .greeting-banner { background: #ffffff; border-color: rgba(0, 0, 0, 0
         top: 4px;
         right: 4px;
     }
+    
+    .greeting-avatar {
+        width: 52px;
+        height: 52px;
+    }
+    
+    .preview-avatar {
+        width: 48px;
+        height: 48px;
+    }
 }
-
-/* ========================================
-   COUNTDOWN & UTILITIES
-   ======================================== */
-.countdown-list-container { display: flex; flex-direction: column; gap: 16px; }
-.countdown-item { background: var(--bg-dark); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; transition: all var(--transition); position: relative; overflow: hidden; }
-.countdown-item:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
-.countdown-item.expired { opacity: 0.6; border-color: var(--danger); }
-.countdown-item::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); }
-.countdown-item.expired::before { background: var(--danger); }
-.countdown-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.countdown-title { font-size: 16px; font-weight: 700; color: var(--text-main); }
-.countdown-actions { display: flex; gap: 8px; }
-.countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
-.countdown-box { background: var(--bg-card); padding: 12px 8px; border-radius: 10px; text-align: center; }
-.countdown-value { font-size: 22px; font-weight: 800; color: var(--primary-light); line-height: 1; }
-.countdown-item.expired .countdown-value { color: var(--danger); }
-.countdown-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; letter-spacing: 0.5px; }
-.countdown-date { font-size: 12px; color: var(--text-muted); text-align: right; }
-.dash-cd-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
-.dash-cd-item:last-child { border-bottom: none; }
-.dash-cd-name { font-weight: 600; color: var(--text-main); font-size: 13px; }
-.dash-cd-days { font-weight: 700; color: var(--warning); font-size: 13px; }
-
-/* ========================================
-   MOBILE RESPONSIVE
-   ======================================== */
-@media (max-width: 768px) {
-  .sidebar { transform: translateX(-100%); } .sidebar.open { transform: translateX(0); }
-  .main-content { margin-left: 0; padding: 16px; } .hamburger { display: flex; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
-  .stat-mobile-hide { display: none !important; }
-  .stat-card { padding: 10px 8px; gap: 8px; } .stat-icon { width: 34px; height: 34px; font-size: 15px; border-radius: 8px; }
-  .stat-info h3 { font-size: 17px; } .stat-info p { font-size: 10px; }
-  .grid-2 { grid-template-columns: 1fr; }
-  .countdown-display { grid-template-columns: repeat(2, 1fr); } .theme-grid { grid-template-columns: repeat(3, 1fr); }
-  .pomodoro-display { font-size: 48px; padding: 24px; } .quote-text { font-size: 16px; } .page-title { font-size: 20px; }
-  .motivation-grid { grid-template-columns: 1fr; }
-  
-  /* Profile Mobile */
-  .avatar-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .form-row { grid-template-columns: 1fr; }
-  .form-actions { flex-direction: column; } .form-actions .btn { width: 100%; }
-  .greeting-preview { flex-direction: column; text-align: center; }
-  .greeting-content { padding: 14px 16px; gap: 12px; }
-  .greeting-avatar { width: 60px; height: 60px; } .greeting-full { font-size: 18px; } .greeting-sub { font-size: 12px; }
-}
-@media (max-width: 480px) {
-  .greeting-name { font-size: 20px; } .greeting-avatar { width: 52px; height: 52px; } .preview-avatar { width: 48px; height: 48px; }
-  .avatar-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-}
-
 body.light { --bg-dark: #f8fafc; --bg-card: #ffffff; --bg-card-hover: #f1f5f9; --text-main: #1e293b; --text-muted: #64748b; --text-bright: #0f172a; --border: rgba(0, 0, 0, 0.1); --chart-grid: rgba(0, 0, 0, 0.05); --chart-label: #64748b; }
 body.theme-red { --primary: #ef4444; --primary-light: #f87171; --primary-dark: #dc2626; }
 body.theme-green { --primary: #10b981; --primary-light: #34d399; --primary-dark: #059669; }
