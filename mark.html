@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learny - Mark Analyze</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6c2bd9">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="overlay"></div>
+    <aside class="sidebar">
+      <div class="sidebar-header"><div class="sidebar-logo"><i class="fa fa-graduation-cap"></i></div><span class="sidebar-title">Learny</span></div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="index.html"><i class="fa fa-grip"></i> Dashboard</a></li>
+        <li class="nav-item"><a href="assistant.html"><i class="fa fa-robot"></i> Assistant</a></li>
+        <li class="nav-item"><a href="tasks.html"><i class="fa fa-check-circle"></i> Tasks</a></li>
+        <li class="nav-item"><a href="time.html"><i class="fa fa-clock"></i> Time Tracker</a></li>
+        <li class="nav-item"><a href="achievements.html"><i class="fa fa-trophy"></i> Achievements</a></li>
+        <li class="nav-item"><a href="motivation.html"><i class="fa fa-quote-left"></i> Motivation</a></li>
+        <li class="nav-item"><a href="music.html"><i class="fa fa-music"></i> Music</a></li>
+        <li class="nav-item"><a href="pomodoro.html"><i class="fa fa-hourglass-half"></i> Pomodoro</a></li>
+        <li class="nav-item active"><a href="mark.html"><i class="fa fa-chart-line"></i> Mark Analyze</a></li>
+        <li class="nav-item"><a href="pastpapers.html"><i class="fa fa-file-alt"></i> Past Papers</a></li>
+        <li class="nav-item"><a href="countdown.html"><i class="fa fa-calendar-day"></i> Countdown</a></li>
+        <li class="nav-item"><a href="settings.html"><i class="fa fa-cog"></i> Settings</a></li>
+        <li class="nav-item"><a href="contact.html"><i class="fa fa-envelope"></i> Contact</a></li>
+        <li class="nav-item"><a href="rate.html"><i class="fa fa-star"></i> Rate Us</a></li>
+      </ul>
+      <div class="sidebar-welcome"><p class="welcome-text">Welcome!</p><div class="divider"></div><p>Stay focused & keep learning</p></div>
+    </aside>
+    <main class="main-content">
+      <header class="page-header">
+        <button class="hamburger"><i class="fa fa-bars"></i></button>
+        <h1 class="page-title"><i class="fa fa-chart-line"></i> Mark Analyze</h1>
+        <div class="header-actions"><button class="theme-toggle" id="toggle-mode"><i class="fa fa-sun"></i></button></div>
+      </header>
+      <div id="notification-toast" class="notification"><i class="fa fa-check-circle"></i><span></span></div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon green"><i class="fa fa-arrow-up"></i></div><div class="stat-info"><h3 id="mark-highest">0</h3><p>Highest Marks</p></div></div>
+        <div class="stat-card"><div class="stat-icon red"><i class="fa fa-arrow-down"></i></div><div class="stat-info"><h3 id="mark-lowest">0</h3><p>Lowest Marks</p></div></div>
+        <div class="stat-card"><div class="stat-icon blue"><i class="fa fa-equals"></i></div><div class="stat-info"><h3 id="mark-avg">0</h3><p>Average</p></div></div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-header"><span class="card-title"><i class="fa fa-plus-circle"></i> Add Marks</span></div>
+        <form id="mark-form">
+          <div class="grid-equal">
+            <div class="form-group"><label>Subject</label><input type="text" id="mark-subject" class="form-control" placeholder="e.g. Math" maxlength="15"></div>
+            <div class="form-group"><label>Marks</label><input type="number" id="mark-value" class="form-control" placeholder="0-100" max="100"></div>
+            <div class="form-group"><label>Date</label><input type="date" id="mark-date" class="form-control"></div>
+            <div class="form-group"><label>Period</label><select id="mark-period" class="form-control"><option>Monthly</option><option>Weekly</option><option>Yearly</option></select></div>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save Mark</button>
+        </form>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><span class="card-title"><i class="fa fa-chart-bar"></i> Mark Chart</span></div>
+          <div class="chart-container"><canvas id="markChart" class="chart-canvas"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title"><i class="fa fa-history"></i> Recent Entries</span></div>
+          <div class="table-responsive">
+            <table class="data-table" id="mark-table">
+              <thead><tr><th>Subject</th><th>Marks</th><th>Date</th></tr></thead>
+              <tbody id="mark-tbody"></tbody>
+            </table>
+          </div>
+          <button class="btn btn-danger btn-sm mt-2" id="mark-clear"><i class="fa fa-trash"></i> Clear Data</button>
+        </div>
+      </div>
+      <footer class="site-footer">Powered by <a href="contact.html">DC</a> | Made in Sri Lanka <i class="fa fa-heart" style="color:var(--danger)"></i></footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
