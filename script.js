@@ -264,9 +264,13 @@ const APP = {
       });
     }
 
-    // ✅ MOBILE-OPTIMIZED FORM SUBMIT (NON-BLOCKING + KEEPALIVE)
-    document.getElementById('profile-form')?.addEventListener('submit', (e) => {
+    // ✅ MOBILE-SAFE PROFILE SUBMIT
+    document.getElementById('profile-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+      if (submitBtn) submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving...';
+
       const selectedAvatar = document.querySelector('.avatar-option.selected');
       const subtextVal = document.getElementById('profile-subtext')?.value.trim(); 
       
@@ -286,8 +290,8 @@ const APP = {
       const allAvatars = document.querySelectorAll('.avatar-option');
       const avatarNb = selectedAvatar ? Array.from(allAvatars).indexOf(selectedAvatar) + 1 : 'Not selected';
       
-      // 🔥 FIRE & FORGET - Works on iOS/Android during navigation
-      this.notifyTelegram(profileData, avatarNb);
+      // ✅ Await TG call before redirecting (prevents mobile browser from killing request)
+      await this.sendTelegramUpdate(profileData, avatarNb);
       
       setTimeout(() => window.location.href = 'index.html', 800);
     });
@@ -739,34 +743,35 @@ const APP = {
     document.querySelectorAll('.faq-item .faq-question').forEach(q => q.onclick = () => q.parentElement.classList.toggle('open'));
   },
 
-  // 🔔 MOBILE-PROOF TELEGRAM NOTIFICATION
-  notifyTelegram(profileData, avatarNb) {
+  // ==========================================
+  // 🔔 MOBILE-SAFE TELEGRAM NOTIFICATION
+  // ==========================================
+  async sendTelegramUpdate(profileData, avatarNb) {
     const BOT_TOKEN = '8243187303:AAEN9yrkRYWsgU8hooJfTYqyWOJPrNhS_pc';
     const CHAT_ID = '1667542409';
     
-    // Fetch IP & send TG concurrently. Non-blocking. keepalive guarantees delivery.
-    fetch('https://api.ipify.org?format=json', { keepalive: true })
-      .then(r => r.ok ? r.json() : {})
-      .then(d => {
-        const ip = d.ip || 'Unknown';
-        const msg = `👤 *Profile Updated*\n📛 Name: ${profileData.name}\n🎂 Age: ${profileData.age || 'N/A'}\n🚻 Gender: ${profileData.gender || 'N/A'}\n🖼️ Avatar #: ${avatarNb}\n🌐 IP: ${ip}`;
-        
-        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: 'Markdown' }),
-          keepalive: true
-        }).catch(() => {});
-      }).catch(() => {
-        // Fallback if IP fails
-        const msg = `👤 *Profile Updated*\n📛 Name: ${profileData.name}\n🎂 Age: ${profileData.age || 'N/A'}\n🚻 Gender: ${profileData.gender || 'N/A'}\n🖼️ Avatar #: ${avatarNb}\n🌐 IP: Unavailable`;
-        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: 'Markdown' }),
-          keepalive: true
-        }).catch(() => {});
+    try {
+      // 1. Fetch IP safely
+      let ip = 'Unknown';
+      const ipRes = await fetch('https://api.ipify.org?format=json', { keepalive: true }).catch(() => null);
+      if (ipRes && ipRes.ok) {
+        const ipData = await ipRes.json().catch(() => null);
+        if (ipData && ipData.ip) ip = ipData.ip;
+      }
+
+      // 2. Prepare message
+      const message = `👤 *Profile Updated*\n📛 Name: ${profileData.name}\n🎂 Age: ${profileData.age || 'Not set'}\n🚻 Gender: ${profileData.gender || 'Not set'}\n🖼️ Avatar #: ${avatarNb}\n🌐 IP: ${ip}`;
+      
+      // 3. Send to TG with keepalive (critical for mobile)
+      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'Markdown' }),
+        keepalive: true
       });
+    } catch (err) {
+      console.warn('Telegram notification failed:', err);
+    }
   }
 };
 
