@@ -1,5 +1,5 @@
 const APP = {
-  data: {
+   {
     tasks: [], timeLogs: [], achievements: {}, marks: [], pomodoroSessions: [],
     examDate: null, countdowns: [], weeklyGoal: 35, currentTheme: 'purple',
     darkMode: false, streak: 0, lastLogin: null,
@@ -776,4 +776,4 @@ const APP = {
 };
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
-document.addEventListener('DOMContentLoaded', () => APP.init()); 
+document.addEventListener('DOMContentLoaded', () => APP.init());
