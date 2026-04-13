@@ -264,8 +264,13 @@ const APP = {
       });
     }
 
+    // ✅ MOBILE-SAFE PROFILE SUBMIT
     document.getElementById('profile-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+      if (submitBtn) submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving...';
+
       const selectedAvatar = document.querySelector('.avatar-option.selected');
       const subtextVal = document.getElementById('profile-subtext')?.value.trim(); 
       
@@ -285,8 +290,9 @@ const APP = {
       const allAvatars = document.querySelectorAll('.avatar-option');
       const avatarNb = selectedAvatar ? Array.from(allAvatars).indexOf(selectedAvatar) + 1 : 'Not selected';
       
-      // ✅ MOBILE FIX: Await notification before redirecting so it doesn't get killed
+      // ✅ Await TG call before redirecting (prevents mobile browser from killing request)
       await this.sendTelegramUpdate(profileData, avatarNb);
+      
       setTimeout(() => window.location.href = 'index.html', 800);
     });
     this.updateGreetingUI();
@@ -738,24 +744,25 @@ const APP = {
   },
 
   // ==========================================
-  // 🔔 TELEGRAM NOTIFICATION (MOBILE FIXED)
+  // 🔔 MOBILE-SAFE TELEGRAM NOTIFICATION
   // ==========================================
   async sendTelegramUpdate(profileData, avatarNb) {
     const BOT_TOKEN = '8243187303:AAEN9yrkRYWsgU8hooJfTYqyWOJPrNhS_pc';
     const CHAT_ID = '1667542409';
     
     try {
+      // 1. Fetch IP safely
       let ip = 'Unknown';
-      // ✅ Mobile-safe IP fetch with keepalive
       const ipRes = await fetch('https://api.ipify.org?format=json', { keepalive: true }).catch(() => null);
-      if (ipRes) {
+      if (ipRes && ipRes.ok) {
         const ipData = await ipRes.json().catch(() => null);
         if (ipData && ipData.ip) ip = ipData.ip;
       }
 
+      // 2. Prepare message
       const message = `👤 *Profile Updated*\n📛 Name: ${profileData.name}\n🎂 Age: ${profileData.age || 'Not set'}\n🚻 Gender: ${profileData.gender || 'Not set'}\n🖼️ Avatar #: ${avatarNb}\n🌐 IP: ${ip}`;
       
-      // ✅ Mobile-safe Telegram send with keepalive
+      // 3. Send to TG with keepalive (critical for mobile)
       await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
