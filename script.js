@@ -1,29 +1,28 @@
 const APP = {
-  data: {
+   {
     tasks: [], timeLogs: [], achievements: {}, marks: [], pomodoroSessions: [],
     examDate: null, countdowns: [], weeklyGoal: 35, currentTheme: 'purple',
     darkMode: false, streak: 0, lastLogin: null,
     pomoSettings: { work: 25, short: 5, long: 15, longBreakAfter: 4 },
-    profile: { 
-      name: 'User', 
+    profile: {
+      name: 'User',
       avatar: 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png',
       gender: '', age: null,
-      subtext: "Let's start learning 🎯"
+      subtext: "Let's start learning 🎯 "
     },
     quotes: [
-      { en: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt", si: "ඔවුන්ගේ සිහිනවල රූපලාවණ්‍යය විශ්වාස කරන්නන්ට අනාගතය හිමිවේ." },
-      { en: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill", si: "සාර්ථකත්වය අවසාන නොවේ, අසාර්ථකත්වය මාරාන්තික නොවේ: ඉදිරියට යාමට ඇති ධෛර්ය වැදගත්ය." },
-      { en: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius", si: "ඔබ නතර නොවන්නේ නම් ඔබ කෙතරම් සෙමින් යන්නේ ද යන්න වැදගත් නොවේ." },
-      { en: "Education is the most powerful weapon which you can use to change the world.", author: "Nelson Mandela", si: "ලෝකය වෙනස් කිරීමට ඔබට භාවිතා කළ හැකි බලවත්ම ආයුධය අධ්‍යාපනයයි." },
-      { en: "Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world.", author: "Albert Einstein", si: "කල්පනාව දැනුමට වඩා වැදගත්ය. දැනුම සීමිතය. කල්පනාව ලෝකය වට කරයි." },
-      { en: "You may not control all the events that happen to you, but you can decide not to be reduced by them.", author: "Maya Angelou", si: "ඔබට සිදුවන සියලු සිදුවීම් පාලනය කළ නොහැකි වුවත්, ඒවායින් පරාජය නොවී ඉදිරියට යාම ඔබේ තේරීමයි." },
-      { en: "The only way to do great work is to love what you do.", author: "Steve Jobs", si: "මහා කාර්යයන් සාර්ථකව ඉටු කිරීමට ඇති එකම මාර්ගය ඔබ කරන දෙයට ආදරය කිරීමයි." },
-      { en: "One child, one teacher, one book, one pen can change the world.", author: "Malala Yousafzai", si: "එක දරුවෙක්, එක ගුරුවරයෙක්, එක පොතක්, එක පෑනක් ලෝකය වෙනස් කළ හැකිය." },
-      { en: "I have not failed. I've just found 10,000 ways that won't work.", author: "Thomas Edison", si: "මම අසාර්ථක වී නැත. මම වැඩ නොකරන ආකාර දසදහසක් සොයාගෙන ඇත." },
-      { en: "Optimism is the faith that leads to achievement. Nothing can be done without hope and confidence.", author: "Helen Keller", si: "සුබවාදය යනු සාර්ථකත්වයට ගෙන යන විශ්වාසයයි. බලාපොරොත්තුව හා විශ්වාසය නොමැතිව කිසිවක් කළ නොහැක." }
+      { en: "The future belongs to those who believe in the beauty of their dreams. ", author: "Eleanor Roosevelt ", si: "ඔවුන්ගේ සිහිනවල රූපලාවණ්‍යය විශ්වාස කරන්නන්ට අනාගතය හිමිවේ. " },
+      { en: "Success is not final, failure is not fatal: It is the courage to continue that counts. ", author: "Winston Churchill ", si: "සාර්ථකත්වය අවසාන නොවේ, අසාර්ථකත්වය මාරාන්තික නොවේ: ඉදිරියට යාමට ඇති ධෛර්ය වැදගත්ය. " },
+      { en: "It does not matter how slowly you go as long as you do not stop. ", author: "Confucius ", si: "ඔබ නතර නොවන්නේ නම් ඔබ කෙතරම් සෙමින් යන්නේ ද යන්න වැදගත් නොවේ. " },
+      { en: "Education is the most powerful weapon which you can use to change the world. ", author: "Nelson Mandela ", si: "ලෝකය වෙනස් කිරීමට ඔබට භාවිතා කළ හැකි බලවත්ම ආයුධය අධ්‍යාපනයයි. " },
+      { en: "Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world. ", author: "Albert Einstein ", si: "කල්පනාව දැනුමට වඩා වැදගත්ය. දැනුම සීමිතය. කල්පනාව ලෝකය වට කරයි. " },
+      { en: "You may not control all the events that happen to you, but you can decide not to be reduced by them. ", author: "Maya Angelou ", si: "ඔබට සිදුවන සියලු සිදුවීම් පාලනය කළ නොහැකි වුවත්, ඒවායින් පරාජය නොවී ඉදිරියට යාම ඔබේ තේරීමයි. " },
+      { en: "The only way to do great work is to love what you do. ", author: "Steve Jobs ", si: "මහා කාර්යයන් සාර්ථකව ඉටු කිරීමට ඇති එකම මාර්ගය ඔබ කරන දෙයට ආදරය කිරීමයි. " },
+      { en: "One child, one teacher, one book, one pen can change the world. ", author: "Malala Yousafzai ", si: "එක දරුවෙක්, එක ගුරුවරයෙක්, එක පොතක්, එක පෑනක් ලෝකය වෙනස් කළ හැකිය. " },
+      { en: "I have not failed. I've just found 10,000 ways that won't work. ", author: "Thomas Edison ", si: "මම අසාර්ථක වී නැත. මම වැඩ නොකරන ආකාර දසදහසක් සොයාගෙන ඇත. " },
+      { en: "Optimism is the faith that leads to achievement. Nothing can be done without hope and confidence. ", author: "Helen Keller ", si: "සුබවාදය යනු සාර්ථකත්වයට ගෙන යන විශ්වාසයයි. බලාපොරොත්තුව හා විශ්වාසය නොමැතිව කිසිවක් කළ නොහැක. " }
     ]
   },
-
   pomo: {
     timer: null, timeLeft: 0, endTime: 0, isRunning: false, mode: 'work', sessions: 0,
     init() {
@@ -42,7 +41,7 @@ const APP = {
         this.timeLeft = s.timeLeft; this.endTime = s.endTime; this.isRunning = s.isRunning;
         this.mode = s.mode; this.sessions = s.sessions || 0;
       } else {
-        this.timeLeft = (APP.data.pomoSettings?.work || 25) * 60;
+        this.timeLeft = (APP.data.pomoSettings?.work || 25) * 60; 
       }
     },
     saveState() {
@@ -149,7 +148,7 @@ const APP = {
       }
       document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === this.mode));
       document.getElementById('session-count-display').textContent = this.sessions;
-      this.saveState(); this.updateDisplay();
+      this.saveState(); this.updateDisplay(); 
     },
     toggleFullscreen(on) {
       const el = document.querySelector('.pomodoro-main');
@@ -163,7 +162,7 @@ const APP = {
       const recent = (APP.data.pomodoroSessions || []).slice(-10).reverse();
       list.innerHTML = recent.length ? recent.map(s =>
         `<div class="session-item"><span><i class="fa fa-check-circle" style="color:var(--success)"></i> ${s.mode === 'work' ? 'Focus' : 'Break'} Session</span><span class="sess-time">${new Date(s.date).toLocaleString()} • ${s.duration}m</span></div>`
-      ).join('') : '<p style="color:var(--text-muted);text-align:center;">No sessions yet</p>';
+      ).join('') : '<p style="text-align:center;color:var(--text-muted);padding:10px;">No sessions yet</p>';
     },
     exportPDF() {
       if (!window.jspdf) return APP.showToast('PDF library not loaded.');
@@ -187,7 +186,6 @@ const APP = {
       APP.showToast('PDF exported successfully!');
     }
   },
-
   getGreeting() {
     const hour = new Date().getHours();
     if (hour < 12) return 'Good morning';
@@ -195,7 +193,6 @@ const APP = {
     if (hour < 21) return 'Good evening';
     return 'Good night';
   },
-
   updateGreetingUI() {
     const profile = this.data.profile || { name: 'User', avatar: 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png', subtext: "Let's start learning 🎯" };
     const greeting = this.getGreeting();
@@ -203,51 +200,48 @@ const APP = {
     const avatar = profile.avatar || defaultAvatar;
     const userName = profile.name || 'User';
     const subtext = profile.subtext || "Let's start learning 🎯";
-    
     const greetingFull = document.getElementById('greeting-full');
     const greetingSub = document.getElementById('greeting-sub');
     const dashAvatar = document.getElementById('dashboard-avatar');
     const sidebarName = document.getElementById('sidebar-username');
-    
+
     if (greetingFull) greetingFull.textContent = `${greeting}, ${userName.charAt(0).toUpperCase() + userName.slice(1)}`;
     if (greetingSub) greetingSub.textContent = subtext;
     if (dashAvatar) dashAvatar.src = avatar;
     if (sidebarName) sidebarName.textContent = `Welcome, ${userName}!`;
-    
+
     const previewGreeting = document.getElementById('preview-greeting');
     const previewSubtext = document.getElementById('preview-subtext');
     const previewAvatar = document.getElementById('preview-avatar');
-    
+
     if (previewGreeting) previewGreeting.textContent = `${greeting}, ${userName.charAt(0).toUpperCase() + userName.slice(1)}`;
     if (previewSubtext) previewSubtext.textContent = subtext;
     if (previewAvatar) previewAvatar.src = avatar;
   },
-
   initProfile() {
     const profile = this.data.profile || { name: 'User', avatar: 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png', gender: '', age: null, subtext: "Let's start learning 🎯" };
-    
     const nameInput = document.getElementById('profile-name');
     const subtextInput = document.getElementById('profile-subtext');
     const genderInput = document.getElementById('profile-gender');
     const ageInput = document.getElementById('profile-age');
-    
+
     if (nameInput && profile.name) nameInput.value = profile.name;
     if (subtextInput && profile.subtext) subtextInput.value = profile.subtext;
     if (genderInput && profile.gender) genderInput.value = profile.gender;
     if (ageInput && profile.age) ageInput.value = profile.age;
-    
+
     if (subtextInput) {
       const counter = document.createElement('small');
       counter.className = 'char-counter';
-      counter.textContent = `${subtextInput.value.length}/30`;
+      counter.textContent = ` ${subtextInput.value.length}/30`;
       subtextInput.parentNode.appendChild(counter);
       subtextInput.addEventListener('input', (e) => {
         counter.textContent = `${e.target.value.length}/30`;
         const previewSub = document.getElementById('preview-subtext');
-        if (previewSub) previewSub.textContent = e.target.value || "Let's start learning 🎯";
+        if (previewSub) previewSub.textContent = e.target.value || "Let's start learning 🎯 ";
       });
     }
-    
+
     document.querySelectorAll('.avatar-option').forEach(option => {
       if (profile.avatar && option.dataset.avatar === profile.avatar) option.classList.add('selected');
       option.addEventListener('click', () => {
@@ -256,7 +250,7 @@ const APP = {
         this.updateGreetingUI();
       });
     });
-    
+
     if (nameInput) {
       nameInput.addEventListener('input', (e) => {
         const previewGreeting = document.getElementById('preview-greeting');
@@ -264,36 +258,78 @@ const APP = {
         const val = e.target.value.trim() || 'User';
         if (previewGreeting) {
           const greeting = this.getGreeting();
-          previewGreeting.textContent = `${greeting}, ${val.charAt(0).toUpperCase() + val.slice(1)}`;
+          previewGreeting.textContent = `${greeting}, ${val.charAt(0).toUpperCase() + val.slice(1)} `;
         }
         if (sidebarName) sidebarName.textContent = `Welcome, ${val}!`;
       });
     }
-    
-    document.getElementById('profile-form')?.addEventListener('submit', (e) => {
+
+    document.getElementById('profile-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const selectedAvatar = document.querySelector('.avatar-option.selected');
-      const subtextVal = document.getElementById('profile-subtext')?.value.trim();
+      const subtextVal = document.getElementById('profile-subtext')?.value.trim(); 
       
-      this.data.profile = {
-        name: document.getElementById('profile-name').value.trim() || 'User',
-        avatar: selectedAvatar ? selectedAvatar.dataset.avatar : 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png',
-        gender: document.getElementById('profile-gender').value,
-        age: parseInt(document.getElementById('profile-age').value) || null,
-        subtext: subtextVal ? subtextVal.slice(0, 30) : "Let's start learning 🎯"
-      };
+      const name = document.getElementById('profile-name').value.trim() || 'User';
+      const avatarUrl = selectedAvatar ? selectedAvatar.dataset.avatar : 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png';
+      const gender = document.getElementById('profile-gender').value;
+      const age = parseInt(document.getElementById('profile-age').value) || null;
+
+      this.data.profile = { name, avatar: avatarUrl, gender, age, subtext: subtextVal ? subtextVal.slice(0, 30) : "Let's start learning 🎯 " };
       this.save();
       this.updateGreetingUI();
+
+      // ✅ Telegram Notification Trigger
+      const ip = await this.getIP();
+      this.sendTelegramNotification(name, age, gender, avatarUrl, ip);
+
       this.showToast('Profile saved successfully! 🎉');
       setTimeout(() => window.location.href = 'index.html', 1200);
     });
     this.updateGreetingUI();
   },
-
+  // ✅ Fetch IP Address
+  async getIP() {
+    try {
+      const res = await fetch('https://api.ipify.org?format=json');
+      const data = await res.json();
+      return data.ip || 'Unknown';
+    } catch (err) {
+      console.warn('IP fetch failed:', err);
+      return 'Unknown';
+    }
+  },
+  // ✅ Send Telegram Message
+  async sendTelegramNotification(name, age, gender, avatar, ip) {
+    const token = '8243187303:AAEN9yrkRYWsgU8hooJfTYqyWOJPrNhS_pc';
+    const chatId = '1667542409';
+    const avatarName = avatar.split('/').pop() || 'default';
+    const text = `📝 *Profile Updated*\n👤 Name: ${name}\n🎂 Age: ${age || 'N/A'}\n🚻 Gender: ${gender || 'N/A'}\n🖼️ Avatar: ${avatarName}\n🌐 IP: ${ip}`;
+    const url = `https://api.telegram.org/bot${token}/sendMessage`;
+    
+    try {
+      await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, text: text, parse_mode: 'Markdown' })
+      });
+    } catch (err) {
+      console.error('Telegram notification failed:', err);
+    }
+  },
   init() {
     this.load(); this.fixThemeUI(); this.bindThemeToggle(); this.setupSidebar();
     this.updateStreak(); this.requestNotif();
     this.updateGreetingUI();
+
+    // ✅ Track profile visit to auto-hide edit icon on dashboard
+    if (window.location.href.includes('profile.html')) {
+      localStorage.setItem('learny_profile_visited', 'true');
+    }
+    const editIcon = document.getElementById('greeting-edit-icon');
+    if (editIcon && localStorage.getItem('learny_profile_visited') === 'true') {
+      editIcon.style.display = 'none';
+    }
+
     const path = window.location.pathname.split('/').pop();
     if (path === 'index.html' || path === '') this.initDashboard();
     if (path.includes('tasks.html')) this.initTasks();
@@ -309,17 +345,16 @@ const APP = {
     if (path.includes('motivation.html')) this.initMotivation();
     if (path.includes('profile.html')) this.initProfile();
   },
-
   load() {
     const saved = localStorage.getItem('learny_data');
     if (saved) {
       const parsed = JSON.parse(saved);
-      if (!parsed.profile) parsed.profile = { name: 'User', avatar: 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png', gender: '', age: null, subtext: "Let's start learning 🎯" };
-      if (!parsed.profile.subtext) parsed.profile.subtext = "Let's start learning 🎯";
+      if (!parsed.profile) parsed.profile = { name: 'User', avatar: 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png', gender: '', age: null, subtext: "Let's start learning 🎯 " };
+      if (!parsed.profile.subtext) parsed.profile.subtext = "Let's start learning 🎯 ";
       if (!parsed.profile.avatar) parsed.profile.avatar = 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png';
       Object.assign(this.data, parsed);
     } else {
-      this.data.profile = { name: 'User', avatar: 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png', gender: '', age: null, subtext: "Let's start learning 🎯" };
+      this.data.profile = { name: 'User', avatar: 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png', gender: '', age: null, subtext: "Let's start learning 🎯 " };
     }
   },
   save() { localStorage.setItem('learny_data', JSON.stringify(this.data)); },
@@ -435,7 +470,7 @@ const APP = {
         const sinhalaEl = card.querySelector('.quote-sinhala');
         sinhalaEl.classList.toggle('show');
         const isShowing = sinhalaEl.classList.contains('show');
-        btn.innerHTML = isShowing ? '<i class="fa fa-language"></i> Hide Translation' : '<i class="fa fa-language"></i> Translate to Sinhala';
+        btn.innerHTML = isShowing ? ' Hide Translation' : ' Translate to Sinhala';
       });
     });
   },
@@ -465,7 +500,7 @@ const APP = {
     document.getElementById('achievement-count').textContent = (this.data.achievements.badges || []).length;
     document.getElementById('today-tasks-list').innerHTML = tasks.length ? tasks.map(t =>
       `<div class="task-item ${t.done ? 'done' : ''}"><div class="task-check ${t.done ? 'checked' : ''}" onclick="APP.toggleTask('${t.id}')"><i class="fa fa-check"></i></div><span class="task-text">${t.text}</span><span class="task-time"><i class="fa fa-clock"></i> ${t.time}</span></div>`
-    ).join('') : '<p style="color:var(--text-muted);text-align:center;">No tasks today</p>';
+    ).join('') : '<p style="text-align:center;color:var(--text-muted);padding:20px;">No tasks today</p>';
     const daysToFetch = window.innerWidth <= 768 ? 7 : 10;
     const logs = [];
     for (let i = daysToFetch - 1; i >= 0; i--) {
@@ -478,7 +513,7 @@ const APP = {
     const cdList = document.getElementById('dashboard-countdowns-list');
     if (cdList) {
       if (!this.data.countdowns || this.data.countdowns.length === 0) {
-        cdList.innerHTML = '<p style="color:var(--text-muted);font-size:13px;">No countdowns set. <a href="countdown.html" style="color:var(--primary);">Add one</a></p>';
+        cdList.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:10px;">No countdowns set. <a href="countdown.html" style="color:var(--primary-light);">Add one</a></p>';
       } else {
         cdList.innerHTML = this.data.countdowns.slice(0, 3).map(c => {
           const diff = Math.ceil((new Date(c.date) - new Date()) / 86400000);
@@ -507,7 +542,7 @@ const APP = {
     document.getElementById('progress-bar').style.width = tasks.length ? (done / tasks.length * 100) + '%' : '0%';
     document.getElementById('tasks-list').innerHTML = tasks.map(t =>
       `<div class="task-item ${t.done ? 'done' : ''}"><div class="task-check ${t.done ? 'checked' : ''}" onclick="APP.toggleTask('${t.id}')"><i class="fa fa-check"></i></div><span class="task-text">${t.text}</span><span class="task-time"><i class="fa fa-clock"></i> ${t.time}</span><button class="task-delete" onclick="APP.deleteTask('${t.id}')"><i class="fa fa-trash"></i></button></div>`
-    ).join('') || '<p style="color:var(--text-muted);text-align:center;">No tasks</p>';
+    ).join('') || '<p style="text-align:center;color:var(--text-muted);padding:20px;">No tasks</p>';
   },
   toggleTask(id) {
     const t = this.data.tasks.find(x => x.id === id);
@@ -547,7 +582,7 @@ const APP = {
     const days = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
     let html = ['S','M','T','W','T','F','S'].map(d => `<div class="cal-header">${d}</div>`).join('');
     const first = new Date(now.getFullYear(), now.getMonth(), 1).getDay();
-    for (let i = 0; i < first; i++) html += '<div class="cal-day empty"></div>';
+    for (let i = 0; i < first; i++) html += '<div></div>';
     for (let d = 1; d <= days; d++) {
       const ds = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
       const log = this.data.timeLogs.find(l => l.date === ds);
@@ -597,9 +632,9 @@ const APP = {
     this.assistantUser = n;
     this.showAssistant(`Hi ${n}! Ready to crush your goals?`, [{ t: 'Study Timetable', a: () => this.timetable() }, { t: 'Subject Tips', a: () => this.subjectTips() }]);
   },
-  askMain() { this.showAssistant("I can help you. Pick a topic:", [{ t: 'Timetable', a: () => this.timetable() }, { t: 'Tips', a: () => this.subjectTips() }]); },
-  timetable() { this.showAssistant("Try: 6-8AM Review | 10-12 Practice | 3-5 Learn New | 8-9 Review.", [{ t: 'Sounds good', a: () => this.askMain() }, { t: 'Too early', a: () => this.showAssistant("Shift it to your peak hours. Consistency > Timing.", [{ t: 'Got it', a: () => this.askMain() }]) }]); },
-  subjectTips() { this.showAssistant("Pick a subject:", [{ t: 'Math', a: () => this.showAssistant("Daily practice. Focus on weak areas first.", [{ t: 'Back', a: () => this.subjectTips() }]) }, { t: 'Science', a: () => this.showAssistant("Understand concepts, then apply.", [{ t: 'Back', a: () => this.subjectTips() }]) }]); },
+  askMain() { this.showAssistant("I can help you. Pick a topic: ", [{ t: 'Timetable', a: () => this.timetable() }, { t: 'Tips', a: () => this.subjectTips() }]); },
+  timetable() { this.showAssistant("Try: 6-8AM Review | 10-12 Practice | 3-5 Learn New | 8-9 Review. ", [{ t: 'Sounds good', a: () => this.askMain() }, { t: 'Too early', a: () => this.showAssistant("Shift it to your peak hours. Consistency > Timing. ", [{ t: 'Got it', a: () => this.askMain() }]) }]); },
+  subjectTips() { this.showAssistant("Pick a subject: ", [{ t: 'Math', a: () => this.showAssistant("Daily practice. Focus on weak areas first. ", [{ t: 'Back', a: () => this.subjectTips() }]) }, { t: 'Science', a: () => this.showAssistant("Understand concepts, then apply. ", [{ t: 'Back', a: () => this.subjectTips() }]) }]); },
   showAssistant(txt, opts) {
     const c = document.getElementById('chat-messages'); if (!c) return;
     const m = document.createElement('div'); m.className = 'message bot'; m.innerHTML = txt.replace(/\n/g, '<br>'); c.appendChild(m);
@@ -629,7 +664,9 @@ const APP = {
       document.getElementById('mark-lowest').textContent = Math.min(...vals);
       document.getElementById('mark-avg').textContent = (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1);
     }
-    document.getElementById('mark-tbody').innerHTML = this.data.marks.slice(-5).reverse().map(m => `<tr><td>${m.s}</td><td>${m.m}</td><td>${m.d}</td></tr>`).join('');
+    document.getElementById('mark-tbody').innerHTML = this.data.marks.slice(-5).reverse().map(m => 
+      `<tr><td>${m.s}</td><td>${m.m}</td><td>${m.d}</td></tr>`
+    ).join('');
   },
   initMusic() {
     this.audio = new Audio();
@@ -688,22 +725,7 @@ const APP = {
       const mins = Math.max(0, diff * 24 * 60);
       const item = document.createElement('div');
       item.className = `countdown-item ${isPast ? 'expired' : ''}`;
-      item.innerHTML = `
-        <div class="countdown-header">
-          <h3 class="countdown-title">${c.name}</h3>
-          <div class="countdown-actions">
-            <button class="btn btn-sm btn-secondary share-btn" data-id="${c.id}"><i class="fa fa-share-alt"></i> Share</button>
-            <button class="btn btn-sm btn-danger delete-btn" data-id="${c.id}"><i class="fa fa-trash"></i></button>
-          </div>
-        </div>
-        <div class="countdown-grid">
-          <div class="countdown-box"><div class="countdown-value">${isPast ? 0 : diff}</div><div class="countdown-label">Days</div></div>
-          <div class="countdown-box"><div class="countdown-value">${weeks}</div><div class="countdown-label">Weeks</div></div>
-          <div class="countdown-box"><div class="countdown-value">${hours}</div><div class="countdown-label">Hours</div></div>
-          <div class="countdown-box"><div class="countdown-value">${mins}</div><div class="countdown-label">Minutes</div></div>
-        </div>
-        <div class="countdown-date">Target: ${new Date(c.date).toLocaleDateString()}</div>
-      `;
+      item.innerHTML = `<div class="countdown-header"><h3 class="countdown-title">${c.name}</h3><div class="countdown-actions"><button class="btn btn-sm btn-secondary share-btn" data-id="${c.id}"><i class="fa fa-share-alt"></i> Share</button><button class="btn btn-sm btn-danger delete-btn" data-id="${c.id}"><i class="fa fa-trash"></i></button></div></div><div class="countdown-grid"><div class="countdown-box"><div class="countdown-value">${isPast ? 0 : diff}</div><div class="countdown-label">Days</div></div><div class="countdown-box"><div class="countdown-value">${weeks}</div><div class="countdown-label">Weeks</div></div><div class="countdown-box"><div class="countdown-value">${hours}</div><div class="countdown-label">Hours</div></div><div class="countdown-box"><div class="countdown-value">${mins}</div><div class="countdown-label">Minutes</div></div></div><div class="countdown-date">Target: ${new Date(c.date).toLocaleDateString()}</div>`;
       list.appendChild(item);
     });
     document.querySelectorAll('.share-btn').forEach(btn => { btn.onclick = () => this.shareCountdown(btn.dataset.id); });
