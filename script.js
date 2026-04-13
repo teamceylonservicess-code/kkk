@@ -264,16 +264,12 @@ const APP = {
       });
     }
 
-    // ✅ MOBILE-SAFE PROFILE SUBMIT - FIRE & FORGET
-    document.getElementById('profile-form')?.addEventListener('submit', (e) => {
+    // ✅ MOBILE-SAFE PROFILE SUBMIT
+    document.getElementById('profile-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const submitBtn = e.target.querySelector('button[type="submit"]');
-      
-      // Show loading state
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving...';
-      }
+      if (submitBtn) submitBtn.disabled = true;
+      if (submitBtn) submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving...';
 
       const selectedAvatar = document.querySelector('.avatar-option.selected');
       const subtextVal = document.getElementById('profile-subtext')?.value.trim(); 
@@ -286,27 +282,18 @@ const APP = {
         subtext: subtextVal ? subtextVal.slice(0, 30) : "Let's start learning 🎯 "
       };
 
-      // ✅ Save to localStorage FIRST (instant)
       this.data.profile = profileData;
       this.save();
       this.updateGreetingUI();
-      
-      // ✅ Send Telegram notification - FIRE AND FORGET (non-blocking)
-      const allAvatars = document.querySelectorAll('.avatar-option');
-      const avatarNb = selectedAvatar ? Array.from(allAvatars).indexOf(selectedAvatar) + 1 : 'Not selected';
-      this.sendTelegramUpdate(profileData, avatarNb);
-
-      // ✅ Show visual feedback IMMEDIATELY
       this.showToast('Profile saved successfully! 🎉');
       
-      // ✅ Reset button & redirect after short delay
-      setTimeout(() => {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = 'Save Profile';
-        }
-        window.location.href = 'index.html';
-      }, 800);
+      const allAvatars = document.querySelectorAll('.avatar-option');
+      const avatarNb = selectedAvatar ? Array.from(allAvatars).indexOf(selectedAvatar) + 1 : 'Not selected';
+      
+      // ✅ Await TG call before redirecting (prevents mobile browser from killing request)
+      await this.sendTelegramUpdate(profileData, avatarNb);
+      
+      setTimeout(() => window.location.href = 'index.html', 800);
     });
     this.updateGreetingUI();
   },
@@ -757,45 +744,36 @@ const APP = {
   },
 
   // ==========================================
-  // 🔔 MOBILE-SAFE TELEGRAM NOTIFICATION (sendBeacon FIRST)
+  // 🔔 MOBILE-SAFE TELEGRAM NOTIFICATION
   // ==========================================
-  sendTelegramUpdate(profileData, avatarNb) {
+  async sendTelegramUpdate(profileData, avatarNb) {
     const BOT_TOKEN = '8243187303:AAEN9yrkRYWsgU8hooJfTYqyWOJPrNhS_pc';
     const CHAT_ID = '1667542409';
     
     try {
-      // Prepare message (IP removed for faster mobile performance)
-      const message = `👤 *Profile Updated*\n📛 Name: ${profileData.name}\n🎂 Age: ${profileData.age || 'Not set'}\n🚻 Gender: ${profileData.gender || 'Not set'}\n🖼️ Avatar #: ${avatarNb}`;
-      
-      const tgUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-      const payload = JSON.stringify({ 
-        chat_id: CHAT_ID, 
-        text: message, 
-        parse_mode: 'Markdown' 
-      });
-      
-      // 🚀 PRIMARY: sendBeacon - designed for unload/navigation scenarios, works reliably on mobile
-      if (navigator.sendBeacon) {
-        const blob = new Blob([payload], { type: 'application/json' });
-        const sent = navigator.sendBeacon(tgUrl, blob);
-        console.log('📡 Telegram beacon sent:', sent);
-        return Promise.resolve(sent);
+      // 1. Fetch IP safely
+      let ip = 'Unknown';
+      const ipRes = await fetch('https://api.ipify.org?format=json', { keepalive: true }).catch(() => null);
+      if (ipRes && ipRes.ok) {
+        const ipData = await ipRes.json().catch(() => null);
+        if (ipData && ipData.ip) ip = ipData.ip;
       }
+
+      // 2. Prepare message
+      const message = `👤 *Profile Updated*\n📛 Name: ${profileData.name}\n🎂 Age: ${profileData.age || 'Not set'}\n🚻 Gender: ${profileData.gender || 'Not set'}\n🖼️ Avatar #: ${avatarNb}\n🌐 IP: ${ip}`;
       
-      // 🔄 FALLBACK: fetch with keepalive for older browsers
-      return fetch(tgUrl, {
+      // 3. Send to TG with keepalive (critical for mobile)
+      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: payload,
+        body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'Markdown' }),
         keepalive: true
-      }).then(res => res.ok).catch(() => false);
-      
+      });
     } catch (err) {
       console.warn('Telegram notification failed:', err);
-      return Promise.resolve(false);
     }
   }
 };
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
-document.addEventListener('DOMContentLoaded', () => APP.init());
+document.addEventListener('DOMContentLoaded', () => APP.init()); 
