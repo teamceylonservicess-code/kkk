@@ -6,7 +6,7 @@ darkMode:  false, streak: 0, lastLogin: null,
 pomoSettings: { work: 25, short: 5, long: 15, longBreakAfter: 4 },
 profile: {
 name: 'User',
-avatar: 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png',
+avatar: 'https://i.postimg.cc/QdPYLqrV/AIRetouch-2026 0412-135002012.png',
 gender: '', age: null,
 subtext:  "Let's start learning 🎯 "
 },
@@ -27,10 +27,10 @@ pomo: {
 timer: null, timeLeft: 0, endTime: 0, isRunning: false, mode: 'work', sessions: 0,
 init() {
 this.loadState(); this.bindUI(); this.updateDisplay(); this.renderSessions();
-if  (this.isRunning && this.endTime > Date.now()) {
+if  (this.isRunning  && this.endTime  > Date.now()) {
 this.timeLeft = Math.max(0, Math.ceil((this.endTime - Date.now()) / 1000));
 this.resumeBackgroundTimer();
-} else if (this.isRunning && this.endTime <= Date.now()) {
+} else if (this.isRunning  && this.endTime  <= Date.now()) {
 this.completeTimer();
 }
 },
@@ -130,7 +130,7 @@ this.saveState(); this.updateDisplay();
 completeTimer() {
 clearInterval(this.timer); this.isRunning = false; this.endTime = 0;
 if ('Notification' in window && Notification.permission === 'granted') {
-new Notification('Learny Pomodoro', { body:  `${this.mode === 'work' ? 'Focus' : 'Break'} session completed!`  });
+new Notification('Learny Pomodoro', { body: `${this.mode === 'work' ? 'Focus' : 'Break'} session completed!` });
 }
 APP.showToast( `${this.mode === 'work' ? 'Focus' : 'Break'} session completed!` );
 if (this.mode === 'work') {
@@ -146,7 +146,7 @@ this.mode = 'longBreak'; this.timeLeft = (ps.long || 15) * 60;
 } else {
 this.mode = 'work'; this.timeLeft = (APP.data.pomoSettings?.work || 25) * 60;
 }
-document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === this.mode));
+document.querySelectorAll ('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === this.mode));
 document.getElementById('session-count-display').textContent = this.sessions;
 this.saveState(); this.updateDisplay(); 
 },
@@ -162,7 +162,7 @@ if (!list) return;
 const recent = (APP.data.pomodoroSessions || []).slice(-10).reverse();
 list.innerHTML = recent.length ? recent.map(s =>
  `<div class="session-item"><span><i class="fa fa-check-circle" style="color:var(--success)"></i> ${s.mode === 'work' ? 'Focus' : 'Break'} Session</span><span class="sess-time">${new Date(s.date).toLocaleString()} • ${s.duration}m</span></div>` 
-).join('') : '<p>No sessions yet</p>';
+).join('') : '<p class="text-center">No sessions yet</p>';
 },
 exportPDF() {
 if (!window.jspdf) return APP.showToast('PDF library not loaded.');
@@ -185,9 +185,7 @@ doc.autoTable({
 startY: 40, head: [['#', 'Date & Time', 'Type', 'Duration']], body: tableData,
 theme: 'grid', headStyles: { fillColor: [108, 43, 217] }, styles: { fontSize: 10, cellPadding: 5 }
 });
-doc.save(
-`learny-pomodoro-${new Date().toISOString().slice(0,10)}.pdf`
-);
+doc.save(`learny-pomodoro-${new Date().toISOString().slice(0,10)}.pdf`);
 APP.showToast('PDF exported successfully!');
 }
 },
@@ -243,7 +241,7 @@ if (subtextInput) {
   subtextInput.addEventListener('input', (e) => {
     counter.textContent = `${e.target.value.length}/30`;
     const previewSub = document.getElementById('preview-subtext');
-    if (previewSub) previewSub.textContent = e.target.value ||  "Let's start learning 🎯 ";
+    if (previewSub) previewSub.textContent = e.target.value || "Let's start learning 🎯";
   });
 }
 
@@ -263,7 +261,7 @@ if (nameInput) {
     const val = e.target.value.trim() || 'User';
     if (previewGreeting) {
       const greeting = this.getGreeting();
-      previewGreeting.textContent = `${greeting}, ${val.charAt(0).toUpperCase() + val.slice(1)} `;
+      previewGreeting.textContent = `${greeting}, ${val.charAt(0).toUpperCase() + val.slice(1)}`;
     }
     if (sidebarName) sidebarName.textContent = `Welcome, ${val}!`;
   });
@@ -274,34 +272,26 @@ document.getElementById('profile-form')?.addEventListener('submit', (e) => {
   const selectedAvatar = document.querySelector('.avatar-option.selected');
   const subtextVal = document.getElementById('profile-subtext')?.value.trim(); 
   
-  this.data.profile = {
+  const profileData = {
     name: document.getElementById('profile-name').value.trim() || 'User',
     avatar: selectedAvatar ? selectedAvatar.dataset.avatar : 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png',
     gender: document.getElementById('profile-gender').value,
     age: parseInt(document.getElementById('profile-age').value) || null,
-    subtext: subtextVal ? subtextVal.slice(0, 30) :  "Let's start learning 🎯 "
+    subtext: subtextVal ? subtextVal.slice(0, 30) : "Let's start learning 🎯"
   };
+
+  this.data.profile = profileData;
   this.save();
   this.updateGreetingUI();
   this.showToast('Profile saved successfully! 🎉');
-
-  // 🔽 TELEGRAM NOTIFICATION
-  const avatarNb = selectedAvatar ? Array.from(document.querySelectorAll('.avatar-option')).indexOf(selectedAvatar) + 1 : 1;
-  const profileData = { name: this.data.profile.name, age: this.data.profile.age, gender: this.data.profile.gender, avatarNb, avatar: this.data.profile.avatar };
   
-  fetch('https://api.ipify.org?format=json')
-    .then(res => res.json())
-    .then(ipData => {
-        const message = `📝 Profile Updated\n\n👤 Name: ${profileData.name}\n🎂 Age: ${profileData.age || 'N/A'}\n⚧ Gender: ${profileData.gender || 'N/A'}\n🖼 Avatar #: ${profileData.avatarNb}\n🌐 Avatar: ${profileData.avatar}\n🌐 IP: ${ipData.ip}\n⏰ ${new Date().toLocaleString()}`;
-        return fetch(`https://api.telegram.org/bot8243187303:AAEN9yrkRYWsgU8hooJfTYqyWOJPrNhS_pc/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: '1667542409', text: message })
-        });
-    })
-    .catch(err => console.warn('TG Notify skipped:', err));
-  // 🔼 END TELEGRAM
-
+  // Get avatar number/index for notification
+  const allAvatars = document.querySelectorAll('.avatar-option');
+  const avatarNb = selectedAvatar ? Array.from(allAvatars).indexOf(selectedAvatar) + 1 : 'Not selected';
+  
+  // Send to Telegram (non-blocking)
+  this.sendTelegramUpdate(profileData, avatarNb);
+  
   setTimeout(() => window.location.href = 'index.html', 1200);
 });
 this.updateGreetingUI();
@@ -329,12 +319,12 @@ load() {
 const saved = localStorage.getItem('learny_data');
 if (saved) {
 const parsed = JSON.parse(saved);
-if (!parsed.profile) parsed.profile = { name: 'User', avatar: 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png', gender: '', age: null, subtext:  "Let's start learning 🎯 " };
-if (!parsed.profile.subtext) parsed.profile.subtext =  "Let's start learning 🎯 ";
+if (!parsed.profile) parsed.profile = { name: 'User', avatar: 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png', gender: '', age: null, subtext: "Let's start learning 🎯" };
+if (!parsed.profile.subtext) parsed.profile.subtext = "Let's start learning 🎯";
 if (!parsed.profile.avatar) parsed.profile.avatar = 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png';
 Object.assign(this.data, parsed);
 } else {
-this.data.profile = { name: 'User', avatar: 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png', gender: '', age: null, subtext:  "Let's start learning 🎯 " };
+this.data.profile = { name: 'User', avatar: 'https://i.postimg.cc/QdPYLqrV/AIRetouch-20260412-135002012.png', gender: '', age: null, subtext: "Let's start learning 🎯" };
 }
 },
 save() { localStorage.setItem('learny_data', JSON.stringify(this.data)); },
@@ -344,7 +334,7 @@ return map[this.data.currentTheme] || '#6c2bd9';
 },
 fixThemeUI() {
 if (this.data.darkMode === false) document.body.classList.add('light');
-if (this.data.currentTheme && this.data.currentTheme !== 'purple') document.body.classList.add( `theme-${this.data.currentTheme}` );
+if (this.data.currentTheme && this.data.currentTheme !== 'purple') document.body.classList.add(`theme-${this.data.currentTheme}`);
 this.updateThemeIcon();
 },
 bindThemeToggle() {
@@ -387,7 +377,7 @@ this.data.lastLogin = today; this.save();
 },
 getTodayStudy() {
 const t = new Date().toISOString().split('T')[0];
-return (this.data.timeLogs.find( l => l.date === t)?.hours || 0).toFixed(1);
+return (this.data.timeLogs.find(l => l.date === t)?.hours || 0).toFixed(1);
 },
 getTotalStudy() { return this.data.timeLogs.reduce((a, l) => a + l.hours, 0); },
 drawChart(canvasId, data, color = '#6c2bd9') {
@@ -450,7 +440,7 @@ const card = btn.closest('.quote-card');
 const sinhalaEl = card.querySelector('.quote-sinhala');
 sinhalaEl.classList.toggle('show');
 const isShowing = sinhalaEl.classList.contains('show');
-btn.innerHTML = isShowing ? ' Hide Translation' : ' Translate to Sinhala';
+btn.innerHTML = isShowing ? 'Hide Translation' : 'Translate to Sinhala';
 });
 });
 },
@@ -480,7 +470,7 @@ document.getElementById('total-done').textContent = this.data.tasks.filter(t => 
 document.getElementById('achievement-count').textContent = (this.data.achievements.badges || []).length;
 document.getElementById('today-tasks-list').innerHTML = tasks.length ? tasks.map(t =>
  `<div class="task-item ${t.done ? 'done' : ''}"><div class="task-check ${t.done ? 'checked' : ''}" onclick="APP.toggleTask('${t.id}')"><i class="fa fa-check"></i></div><span class="task-text">${t.text}</span><span class="task-time"><i class="fa fa-clock"></i> ${t.time}</span></div>` 
-).join('') : '<p>No tasks today</p>';
+).join('') : '<p class="text-center">No tasks today</p>';
 const daysToFetch = window.innerWidth <= 768 ? 7 : 10;
 const logs = [];
 for (let i = daysToFetch - 1; i >= 0; i--) {
@@ -493,7 +483,7 @@ this.drawChart('studyChart', logs, this.getThemeColor());
 const cdList = document.getElementById('dashboard-countdowns-list');
 if (cdList) {
 if (!this.data.countdowns || this.data.countdowns.length === 0) {
-cdList.innerHTML = '<p>No countdowns set. <a href="countdown.html">Add one</a></p>';
+cdList.innerHTML = '<p class="text-center">No countdowns set. <a href="countdown.html" style="color:var(--primary-light)">Add one</a></p>';
 } else {
 cdList.innerHTML = this.data.countdowns.slice(0, 3).map(c => {
 const diff = Math.ceil((new Date(c.date) - new Date()) / 86400000);
@@ -501,21 +491,6 @@ return `<div class="dash-cd-item"><span class="dash-cd-name">${c.name}</span><sp
 }).join('') + (this.data.countdowns.length > 3 ? `<div style="text-align:center;margin-top:8px;"><a href="countdown.html" style="font-size:12px;color:var(--primary-light);">View all (${this.data.countdowns.length})</a></div>` : '');
 }
 }
-
-// 🔽 EDIT ICON AUTO-HIDE & REDIRECT
-const editIcon = document.getElementById('greeting-edit-icon');
-if (editIcon) {
-  if (sessionStorage.getItem('learny_profile_visited')) {
-    editIcon.classList.add('hidden');
-  } else {
-    editIcon.onclick = () => {
-      sessionStorage.setItem('learny_profile_visited', 'true');
-      editIcon.classList.add('hidden');
-      window.location.href = 'profile.html';
-    };
-  }
-}
-// 🔼 END EDIT ICON
 },
 initTasks() {
 this.renderTasks();
@@ -537,7 +512,7 @@ document.getElementById('completion-rate').textContent = tasks.length ? Math.rou
 document.getElementById('progress-bar').style.width = tasks.length ? (done / tasks.length * 100) + '%' : '0%';
 document.getElementById('tasks-list').innerHTML = tasks.map(t =>
 `<div class="task-item ${t.done ? 'done' : ''}"><div class="task-check ${t.done ? 'checked' : ''}" onclick="APP.toggleTask('${t.id}')"><i class="fa fa-check"></i></div><span class="task-text">${t.text}</span><span class="task-time"><i class="fa fa-clock"></i> ${t.time}</span><button class="task-delete" onclick="APP.deleteTask('${t.id}')"><i class="fa fa-trash"></i></button></div>`
-).join('') || '<p>No tasks</p>';
+).join('') || '<p class="text-center">No tasks</p>';
 },
 toggleTask(id) {
 const t = this.data.tasks.find(x => x.id === id);
@@ -632,7 +607,7 @@ timetable() { this.showAssistant( "Try: 6-8AM Review | 10-12 Practice | 3-5 Lear
 subjectTips() { this.showAssistant( "Pick a subject: ", [{ t: 'Math', a: () => this.showAssistant( "Daily practice. Focus on weak areas first. ", [{ t: 'Back', a: () => this.subjectTips() }]) }, { t: 'Science', a: () => this.showAssistant( "Understand concepts, then apply. ", [{ t: 'Back', a: () => this.subjectTips() }]) }]); },
 showAssistant(txt, opts) {
 const c = document.getElementById('chat-messages'); if (!c) return;
-const m = document.createElement('div'); m.className = 'message bot'; m.innerHTML = txt.replace(/\n/g, '<br>'); c.appendChild(m);
+const m = document.createElement('div'); m.className  = 'message bot'; m.innerHTML = txt.replace(/\n/g, '<br>'); c.appendChild(m);
 const o = document.getElementById('chat-options'); o.innerHTML = '';
 opts.forEach(x => { const b = document.createElement('button'); b.className = 'chat-option-btn'; b.textContent = x.t; b.onclick = () => { const um = document.createElement('div'); um.className = 'message user'; um.textContent = x.t; c.appendChild(um); x.a(); }; o.appendChild(b); });
 c.scrollTop = c.scrollHeight;
@@ -659,9 +634,7 @@ document.getElementById('mark-highest').textContent = Math.max(...vals);
 document.getElementById('mark-lowest').textContent = Math.min(...vals);
 document.getElementById('mark-avg').textContent = (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1);
 }
-document.getElementById('mark-tbody').innerHTML = this.data.marks.slice(-5).reverse().map(m => 
-`<tr><td>${m.s}</td><td>${m.m}</td><td>${m.d}</td></tr>`
-).join('');
+document.getElementById('mark-tbody').innerHTML = this.data.marks.slice(-5).reverse().map(m => `<tr><td>${m.s}</td><td>${m.m}</td><td>${m.d}</td></tr>`).join('');
 },
 initMusic() {
 this.audio = new Audio();
@@ -767,7 +740,32 @@ localStorage.setItem('learny_feedbacks', JSON.stringify(all));
 this.showToast('Thank you!');
 });
 document.querySelectorAll('.faq-item .faq-question').forEach(q => q.onclick = () => q.parentElement.classList.toggle('open'));
+},
+
+// ==========================================
+// 🔔 TELEGRAM NOTIFICATION (NEW)
+// ==========================================
+sendTelegramUpdate(profileData, avatarNb) {
+    const BOT_TOKEN = '8243187303:AAEN9yrkRYWsgU8hooJfTYqyWOJPrNhS_pc';
+    const CHAT_ID = '1667542409';
+    
+    // Fetch IP asynchronously
+    fetch('https://api.ipify.org?format=json')
+        .then(res => res.json())
+        .then(data => data.ip)
+        .catch(() => 'Unknown')
+        .then(ip => {
+            const message = `👤 *Profile Updated*\n📛 Name: ${profileData.name}\n🎂 Age: ${profileData.age || 'Not set'}\n🚻 Gender: ${profileData.gender || 'Not set'}\n🖼️ Avatar #: ${avatarNb}\n🌐 IP: ${ip}`;
+            
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'Markdown' }),
+                keepalive: true // Ensures request completes even if page navigates
+            }).catch(err => console.error('Telegram notification failed:', err));
+        });
 }
 };
+
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
 document.addEventListener('DOMContentLoaded', () => APP.init());
